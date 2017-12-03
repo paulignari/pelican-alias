@@ -54,13 +54,16 @@ class AliasGenerator(object):
             self.context.get('hidden_pages', []))
 
         for page in pages:
-            aliases = page.metadata.get('alias', [])
-            if type(aliases) != list:
-                aliases = aliases.split(self.alias_delimiter)
-            for alias in aliases:
-                alias = alias.strip()
-                logger.info('[alias] Processing alias %s' % alias)
-                self.create_alias(page, alias)
+            translations=page.translations
+            translations.append (page)
+            for translation in translations:
+                aliases = translation.metadata.get('alias', [])
+                if type(aliases) != list:
+                    aliases = aliases.split(self.alias_delimiter)
+                for alias in aliases:
+                    alias = alias.strip()
+                    logger.info('[alias] Processing alias %s' % alias)
+                    self.create_alias(translation, alias)
 
 
 def get_generators(generators):
